@@ -72,6 +72,43 @@
 
         </li>
 
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">sprity.</span>error</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.sprity.error">module sprity.error</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.sprity.error.LayoutError">
+            function <span class="apidocSignatureSpan">sprity.error.</span>LayoutError
+            <span class="apidocSignatureSpan">(message)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.sprity.error.PluggableError">
+            function <span class="apidocSignatureSpan">sprity.error.</span>PluggableError
+            <span class="apidocSignatureSpan">(message, pluggable)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.sprity.error.TileError">
+            function <span class="apidocSignatureSpan">sprity.error.</span>TileError
+            <span class="apidocSignatureSpan">(message, image)</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
@@ -181,6 +218,112 @@ this.<span class="apidocCodeKeywordSpan">src</span>(o)
   .on('error', handleCallbackError(cb))
   .on('end', function () {
     if (_.isFunction(cb) &amp;&amp; !error) {
+...</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.sprity.error" id="apidoc.module.sprity.error">module sprity.error</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.sprity.error.LayoutError" id="apidoc.element.sprity.error.LayoutError">
+        function <span class="apidocSignatureSpan">sprity.error.</span>LayoutError
+        <span class="apidocSignatureSpan">(message)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function LayoutError(message) {
+  this.name = 'LayoutError';
+  this.message = message || 'No layouts created';
+  this.reason = 'This error is most likely triggered by a wrong src glob used. You need to give a glob that gets evaluated to image
+ files. For example\'./src/images/*.png\' will work but \'./src/images/\' won\'t.\nYou can read more about globs here: https://github.com/isaacs/node-glob#glob-primer';
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+};
+};
+
+var pushLayouts = function (opt) {
+return function (cb) {
+  var stream = this;
+  if (_.keys(opt.layouts).length === 0) {
+    var e = new Err.<span class="apidocCodeKeywordSpan">LayoutError</span>();
+    stream.emit('error', e);
+  }
+  else {
+    _.each(opt.layouts, function (l, key) {
+      stream.push({
+        name: key,
+        classname: getClassName(key, opt),
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.sprity.error.PluggableError" id="apidoc.element.sprity.error.PluggableError">
+        function <span class="apidocSignatureSpan">sprity.error.</span>PluggableError
+        <span class="apidocSignatureSpan">(message, pluggable)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function PluggableError(message, pluggable) {
+  this.name = 'PluggableError';
+  this.message = message || 'Error finding module';
+  this.reason = 'This error gets triggered when the used image engine or style processor is not installed. For example to use sass
+ as the style processor install sprity-sass first.';
+  this.pluggable = pluggable;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+  if (!loadModule) {
+    try {
+      loadModule = mod;
+      return require(mod);
+    }
+    catch(e) {
+      throw new Err.<span class="apidocCodeKeywordSpan">PluggableError</span>(mod + ' not found.', mod);
+    }
+  }
+
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.sprity.error.TileError" id="apidoc.element.sprity.error.TileError">
+        function <span class="apidocSignatureSpan">sprity.error.</span>TileError
+        <span class="apidocSignatureSpan">(message, image)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function TileError(message, image) {
+  this.name = 'TileError';
+  this.message = message || 'Error generating tile';
+  this.image = image;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+          path: image.path,
+          type: info.format.toLowerCase(),
+          width: info.width
+        };
+        return Promise.resolve(tileObj);
+      }
+      else {
+        throw new Err.<span class="apidocCodeKeywordSpan">TileError</span>(image.path + ' is not an image', image);
+      }
+    }
+    else {
+      throw new Err.TileError(image.path + ' does not exist', image);
+    }
+  };
+};
 ...</pre></li>
     </ul>
 
