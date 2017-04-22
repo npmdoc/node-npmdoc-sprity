@@ -109,7 +109,8 @@
         "style": "jscs test/*.js lib/**/*.js index.js",
         "test": "mocha --reporter spec"
     },
-    "version": "1.0.8"
+    "version": "1.0.8",
+    "bin": {}
 }
 ```
 
